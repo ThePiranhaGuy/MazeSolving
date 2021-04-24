@@ -27,15 +27,19 @@ class Dnode:
         outer_iterations = 0
         max_iterations = (len(maze) // 2) ** 4
 
+        # move = [[-1, 0],  # go up
+        #         [-1,-1],
+        #         [0, -1],  # go left
+        #         [-1,+1],
+        #         [ 1, 0],  # go down
+        #         [ 1, 1],
+        #         [ 0, 1],  # go right
+        #         [ 1,-1]]
         move = [[-1, 0],  # go up
-                [-1,-1],
                 [0, -1],  # go left
-                [-1,+1],
                 [ 1, 0],  # go down
-                [ 1, 1],
-                [ 0, 1],  # go right
-                [ 1,-1]]
-        
+                [ 0, 1]]  # go right
+
 
         no_rows, no_columns,_ = maze.shape
 
