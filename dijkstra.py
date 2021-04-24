@@ -9,22 +9,7 @@ class Dnode:
 
     def __eq__(self,other):
         return self.position == other.position
-    
-    def return_path(self, maze,visited):
-        path = []               #adjecacy list for the path
-        result  = maze.copy()
-        current = self
-        while current is not None:
-            path.append(current.position)
-            current = current.parent
-        count = 1
-        for i in visited:
-            result[i.position[0],i.position[1]] = [50,88,239]
-        # we update the path of start to end found by A-star search with every step incremented by 1
-        for i in range(len(path)):
-            result[path[i][0]][path[i][1]] = [239,88,50]
-            count += 1
-        return (result, count)
+
 
     def solve(maze,cost,start,end) ->np.ndarray:
 
@@ -40,7 +25,7 @@ class Dnode:
         unvisited_list.append(start_node)
 
         outer_iterations = 0
-        max_iterations = (len(maze) // 2) ** 10
+        max_iterations = (len(maze) // 2) ** 4
 
         move = [[-1, 0],  # go up
                 [-1,-1],
@@ -69,14 +54,14 @@ class Dnode:
             # computation cost is too high
             if outer_iterations > max_iterations:
                 print("giving up on pathfinding too many iterations")
-                return current_node.return_path(maze,visited_list)
+                break
 
             unvisited_list.pop(current_index)
             visited_list.append(current_node)
 
             if current_node == end_node:
                 print("Computation Complete!")
-                return current_node.return_path(maze,visited_list)
+                break
             children = []
 
             for new_position in move:
@@ -94,7 +79,7 @@ class Dnode:
                     continue
 
                 new_node = Dnode(current_node, node_position)
-
+                maze[node_position[0]][node_position[1]] = [50,88,239]
                 children.append(new_node)
 
             for child in children:
@@ -104,9 +89,17 @@ class Dnode:
 
                 child.f = current_node.f + cost
 
-                # Child is already in the yet_to_visit list and f cost is already lower 
                 if child in unvisited_list:
                     continue
 
                 unvisited_list.append(child)
+        
+                count=0
+        # we update the path of start to end found by Dijkstra search with every step incremented by 1
+        while current_node is not None:
+            count+=1
+            maze[current_node.position[0],current_node.position[1]] = [239,88,50]
+            current_node = current_node.parent
+        return (maze, count)
+
 
