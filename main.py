@@ -10,7 +10,7 @@ def main():
 
     cost = 1  # cost per movement
     timestamp = time.time()
-    res, counter = Dnode.solve(maze, cost, start, end)
+    res, counter = AstarNode.solve(maze, cost, start, end)
     timestamp = time.time()-timestamp
     print("==={} seconds===\n==={} steps===".format(timestamp, counter))
     if res is None:
