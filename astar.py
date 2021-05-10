@@ -69,7 +69,7 @@ class AstarNode:
             # if we hit this point return the path such as it may be no solution or
             # computation cost is too high
             if outer_iterations > max_iterations:
-                print("giving up on pathfinding too many iterations")
+                print("Aborting task. Too many iterations")
                 break
 
             unvisited_list.pop(current_index)
@@ -105,7 +105,7 @@ class AstarNode:
 
                 child.g = current_node.g + cost
 
-                child.h = child.manhattan_distance(end_node)    #HERE 
+                child.h = child.eucledian_distance(end_node)    #HERE 
 
                 child.f = child.g + (child.h)
 
