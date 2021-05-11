@@ -11,7 +11,7 @@ class Dnode:
         return self.position == other.position
 
 
-    def solve(maze,cost,start,end) ->np.ndarray:
+    def solve(maze,cost,start,end,steps=8) ->np.ndarray:
 
         start_node = Dnode(None,tuple(start))
         start_node.f=0
@@ -27,18 +27,23 @@ class Dnode:
         outer_iterations = 0
         max_iterations = (len(maze) // 2) ** 4
 
-        # move = [[-1, 0],  # go up
-        #         [-1,-1],
-        #         [0, -1],  # go left
-        #         [-1,+1],
-        #         [ 1, 0],  # go down
-        #         [ 1, 1],
-        #         [ 0, 1],  # go right
-        #         [ 1,-1]]
-        move = [[-1, 0],  # go up
-                [0, -1],  # go left
-                [ 1, 0],  # go down
-                [ 0, 1]]  # go right
+        if steps == 8:
+            move = [[-1, 0],  # go up
+                    [-1,-1],
+                    [0, -1],  # go left
+                    [-1,+1],
+                    [ 1, 0],  # go down
+                    [ 1, 1],
+                    [ 0, 1],  # go right
+                    [ 1,-1]]
+        elif steps == 4 :
+            move = [[-1, 0],  # go up
+                    [0, -1],  # go left
+                    [ 1, 0],  # go down
+                    [ 0, 1]]  # go right
+        else:
+            print("error!")
+            return None
 
 
         no_rows, no_columns,_ = maze.shape

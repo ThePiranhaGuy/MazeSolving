@@ -14,14 +14,15 @@ class AstarNode:
     def __eq__(self, other):
         return self.position == other.position
 
-    def eucledian_distance(self,node):    #returns eucledian distance from calling object to specified node
-        return math.sqrt((self.position[0] - node.position[0])**2 + (self.position[1] - node.position[1])**2)
-    def diagonal_distance(self,node):
-        return max(abs(self.position[0]-node.position[0]),abs(self.position[1]-node.position[1]))
-    def manhattan_distance(self,node):
-        return (abs(self.position[0]-node.position[0]) + abs(self.position[1]-node.position[1]))
+    def distance(self,node,hType):    #returns eucledian distance from calling object to specified node
+        if hType==1:
+            return math.sqrt((self.position[0] - node.position[0])**2 + (self.position[1] - node.position[1])**2)
+        elif hType==2:
+            return (abs(self.position[0]-node.position[0]) + abs(self.position[1]-node.position[1]))
+        elif hType==3:
+            return max(abs(self.position[0]-node.position[0]),abs(self.position[1]-node.position[1]))
 
-    def solve(maze, cost, start, end):
+    def solve(maze, cost, start, end, steps = 8,hType = 1):
         start_node = AstarNode(None, tuple(start))
         start_node.g = start_node.h = start_node.f = 0
         end_node = AstarNode(None, tuple(end))
@@ -37,20 +38,23 @@ class AstarNode:
 
         outer_iterations = 0
         max_iterations = (len(maze) // 2) ** 4
-
-        move = [[-1, 0],  # go up
-                [-1,-1],
-                [0, -1],  # go left
-                [-1,+1],
-                [ 1, 0],  # go down
-                [ 1, 1],
-                [ 0, 1],  # go right
-                [ 1,-1]]
-        # move = [[-1, 0],  # go up
-        #         [0, -1],  # go left
-        #         [ 1, 0],  # go down
-        #         [ 0, 1]]  # go right
-
+        if steps == 8:
+            move = [[-1, 0],  # go up
+                    [-1,-1],
+                    [0, -1],  # go left
+                    [-1,+1],
+                    [ 1, 0],  # go down
+                    [ 1, 1],
+                    [ 0, 1],  # go right
+                    [ 1,-1]]
+        elif steps == 4 :
+            move = [[-1, 0],  # go up
+                    [0, -1],  # go left
+                    [ 1, 0],  # go down
+                    [ 0, 1]]  # go right
+        else:
+            print("error!")
+            return None
 
         no_rows, no_columns,_ = maze.shape
 
@@ -82,8 +86,7 @@ class AstarNode:
 
             for new_position in move:
 
-                node_position = (
-                    current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
+                node_position = (current_node.position[0] + new_position[0], current_node.position[1] + new_position[1])
 
                 if (node_position[0] > (no_rows - 1) or
                     node_position[0] < 0 or
@@ -105,7 +108,7 @@ class AstarNode:
 
                 child.g = current_node.g + cost
 
-                child.h = child.eucledian_distance(end_node)    #HERE 
+                child.h = child.distance(end_node,hType)    #HERE 
 
                 child.f = child.g + (child.h)
 
