@@ -47,6 +47,8 @@ class Dnode:
 
 
         no_rows, no_columns,_ = maze.shape
+        maze[start_node.position]=[0,0,0]
+        maze[end_node.position] = [0,0,0]
 
         while len(unvisited_list) > 0:
 
