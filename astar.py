@@ -111,7 +111,7 @@ class AstarNode:
 
                 child.h = child.distance(end_node,hType)    #HERE 
 
-                child.f = child.g + (child.h)
+                child.f = child.g + 10*(child.h)
 
                 # Child is already in the yet_to_visit list and f cost is already lower 
                 if len([i for i in unvisited_list if child == i and child.f > i.f]) > 0:
