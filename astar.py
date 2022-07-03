@@ -22,11 +22,14 @@ class AstarNode:
         elif hType==3:
             return max(abs(self.position[0]-node.position[0]),abs(self.position[1]-node.position[1]))
 
-    def solve(maze, cost, start, end, steps = 8,hType = 1):
+    def solve(maze, cost, start, end, steps = 8,hType = 1,non_admissible_h=False):
         start_node = AstarNode(None, tuple(start))
         start_node.g = start_node.h = start_node.f = 0
         end_node = AstarNode(None, tuple(end))
         end_node.g = end_node.h = end_node.f = 0
+        non_ad_h =1
+        if(non_admissible_h):
+            non_ad_h=10
 
 
         unvisited_list = []
@@ -111,7 +114,7 @@ class AstarNode:
 
                 child.h = child.distance(end_node,hType)    #HERE 
 
-                child.f = child.g + 10*(child.h)
+                child.f = child.g + non_ad_h*(child.h)
 
                 # Child is already in the yet_to_visit list and f cost is already lower 
                 if len([i for i in unvisited_list if child == i and child.f > i.f]) > 0:
